@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEFAR — Atlas de l'entrepreneuriat jeune · DPEP / MJS Sénégal</title>
+<meta name="description" content="Prototype de plateforme cartocentrée : guichet d'orientation pour les jeunes porteurs de projets et tableau de bord de pilotage territorial de l'objectif 100 000 jeunes entrepreneurs formalisés d'ici 2027.">
+<meta name="theme-color" content="#0B5D3B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%230B5D3B'/%3E%3Cpath d='M20 8c-5 0-9 4-9 9 0 6.5 9 15 9 15s9-8.5 9-15c0-5-4-9-9-9z' fill='%23E8A817'/%3E%3Ccircle cx='20' cy='17' r='3.5' fill='%230B5D3B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="demo">Prototype CEGIT · <b>données simulées</b><span class="long"> à des fins de démonstration</span></div>
+
+<header class="top">
+  <a class="brand" href="#guichet" aria-label="DEFAR — accueil">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#0B5D3B"/><path d="M20 8c-5 0-9 4-9 9 0 6.5 9 15 9 15s9-8.5 9-15c0-5-4-9-9-9z" fill="#E8A817"/><circle cx="20" cy="17" r="3.5" fill="#0B5D3B"/></svg>
+    <span><span class="nom">DEFAR</span><span class="sous">Atlas de l'entrepreneuriat jeune</span></span>
+  </a>
+  <nav class="onglets" aria-label="Navigation principale">
+    <button data-vue="guichet" class="actif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Guichet jeunes</button>
+    <button data-vue="pilotage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Pilotage DPEP</button>
+    <button data-vue="partenaires"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 20c0-2.5 1.3-4.6 3-5.3 2.5.3 5 2.4 5 5.3"/></svg>Partenaires</button>
+    <button data-vue="projet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Le projet</button>
+  </nav>
+  <div class="inst"><b>Ministère de la Jeunesse et des Sports</b>Direction de la Promotion de l'Entrepreneuriat et des Partenariats</div>
+</header>
+
+<main>
+
+<!-- ===================== VOLET 1 : GUICHET JEUNES ===================== -->
+<section class="vue active" id="vue-guichet">
+  <aside class="panneau">
+    <div class="bloc">
+      <h2>Trouver le bon accompagnement</h2>
+      <p class="chapo">Dites-nous où vous en êtes : DEFAR vous oriente vers les structures d'appui les plus proches et adaptées à votre projet.</p>
+
+      <div class="label">Où en est votre projet ?</div>
+      <div class="seg" id="maturite">
+        <button data-m="idee" class="on">J'ai une idée<small>idéation</small></button>
+        <button data-m="amorcage">Je démarre<small>création</small></button>
+        <button data-m="croissance">Je développe<small>croissance</small></button>
+      </div>
+
+      <div class="label">De quoi avez-vous besoin ?</div>
+      <div class="chips" id="besoins">
+        <button class="chip" data-b="orientation">🧭 Orientation</button>
+        <button class="chip" data-b="formation">🎓 Formation</button>
+        <button class="chip" data-b="ideation">💡 Structurer mon idée</button>
+        <button class="chip" data-b="mentorat">🤝 Mentorat</button>
+        <button class="chip" data-b="financement">💰 Financement</button>
+        <button class="chip" data-b="formalisation">📄 Me formaliser</button>
+      </div>
+
+      <div class="label">Secteur d'activité</div>
+      <select class="champ" id="secteur">
+        <option value="">Tous les secteurs</option>
+        <option value="agriculture">Agriculture & agro-transformation</option>
+        <option value="numerique">Numérique</option>
+        <option value="artisanat">Artisanat</option>
+        <option value="sport">Sport & loisirs</option>
+        <option value="economie_verte">Économie verte</option>
+        <option value="commerce">Commerce & services</option>
+        <option value="peche">Pêche & aquaculture</option>
+        <option value="elevage">Élevage</option>
+        <option value="tourisme">Tourisme</option>
+        <option value="transformation">Transformation</option>
+      </select>
+
+      <div class="label">Où êtes-vous ?</div>
+      <div class="ligne2">
+        <select class="champ" id="ou"><option value="">Choisir mon département…</option></select>
+        <button class="btn" id="geoloc" title="Me localiser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+      </div>
+    </div>
+
+    <div class="bloc">
+      <div class="label" style="margin-top:0">Votre parcours conseillé</div>
+      <div class="parcours" id="parcours"></div>
+    </div>
+
+    <div class="resultats">
+      <div class="res-tete"><b id="nb-res">—</b><span id="tri-res">les plus proches d'abord</span></div>
+      <div id="liste-res"></div>
+    </div>
+  </aside>
+
+  <div class="carte">
+    <div class="map" id="map-guichet"></div>
+    <div class="fiche" id="fiche"></div>
+    <div class="legende" id="leg-guichet"></div>
+  </div>
+</section>
+
+<!-- ===================== VOLET 2 : PILOTAGE ===================== -->
+<section class="vue" id="vue-pilotage">
+  <div class="pilotage">
+    <div class="carte">
+      <div class="map" id="map-pilotage"></div>
+      <div class="barre-carte">
+        <select id="indic" aria-label="Indicateur">
+          <option value="taux">Taux d'atteinte de l'objectif (%)</option>
+          <option value="formalises">Jeunes entreprises formalisées</option>
+          <option value="densite">Structures d'appui / 10 000 jeunes</option>
+          <option value="abandon">Taux d'abandon des porteurs (%)</option>
+          <option value="femmes">Part des femmes entrepreneures (%)</option>
+          <option value="zones">Zones blanches d'accompagnement</option>
+          <option value="opportunites">Opportunités sectorielles</option>
+        </select>
+        <div class="toggle" id="echelle"><button data-e="dep" class="on">Départements</button><button data-e="reg">Régions</button></div>
+        <select id="filiere" style="display:none" aria-label="Filière">
+          <option value="agriculture">Agriculture</option><option value="elevage">Élevage</option><option value="peche">Pêche</option>
+          <option value="tourisme">Tourisme</option><option value="numerique">Numérique</option><option value="mines">Mines</option>
+          <option value="artisanat">Artisanat</option><option value="commerce">Commerce</option><option value="foresterie">Foresterie</option>
+          <option value="sel">Sel</option><option value="transformation">Transformation</option>
+        </select>
+      </div>
+      <div class="legende" id="leg-pilotage"></div>
+    </div>
+
+    <div class="tableau">
+      <div class="objectif">
+        <small>Feuille de route « 100 000 jeunes formalisés » · échéance 2027</small>
+        <div class="gros" id="obj-val">—</div>
+        <div class="jauge"><i id="obj-jauge"></i><em id="obj-cible"></em></div>
+        <div class="meta"><span id="obj-pct">—</span><span id="obj-ecart">—</span></div>
+      </div>
+
+      <div class="bloc">
+        <div class="kpis" id="kpis"></div>
+      </div>
+
+      <div class="bloc territoire" id="territoire">
+        <h3>Fiche territoire <small>cliquez sur la carte</small></h3>
+        <p class="sub">Sélectionnez un département ou une région pour afficher ses indicateurs et les recommandations.</p>
+      </div>
+
+      <div class="bloc">
+        <h3>Trajectoire nationale <small>cumul mensuel</small></h3>
+        <canvas id="graph-traj" height="190"></canvas>
+      </div>
+
+      <div class="bloc">
+        <h3>Zones blanches prioritaires <small>déficit d'accompagnement</small></h3>
+        <div id="liste-zb"></div>
+      </div>
+
+      <div class="bloc">
+        <h3>Classement <small id="class-lib">taux d'atteinte</small></h3>
+        <table class="classement"><thead><tr><th>#</th><th>Territoire</th><th style="text-align:right">Valeur</th></tr></thead><tbody id="class-corps"></tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VOLET 3 : PARTENAIRES ===================== -->
+<section class="vue scroll" id="vue-partenaires">
+  <div class="page">
+    <div class="hero-p">
+      <div>
+        <div class="eyebrow">Fédérer sans se substituer</div>
+        <h1>Un écosystème lisible, des partenariats ciblés</h1>
+        <p>DEFAR offre à chaque partenaire une vitrine géolocalisée de ses dispositifs, et aux bailleurs un argumentaire chiffré, territoire par territoire, pour orienter leurs financements là où l'impact sera le plus fort.</p>
+      </div>
+      <div class="kpis" id="kpis-part"></div>
+    </div>
+
+    <div class="section">
+      <h2>Les familles de partenaires référencées</h2>
+      <p class="intro">Chaque structure gère sa propre fiche (horaires, conditions, créneaux de rendez-vous) depuis un espace partenaire, et partage ses indicateurs d'accompagnement avec la DPEP.</p>
+      <div class="grille" id="familles"></div>
+    </div>
+
+    <div class="section">
+      <h2>Besoins par territoire : l'argumentaire pour les bailleurs</h2>
+      <p class="intro">Territoires où un investissement (antenne, unité mobile, ligne de financement) aurait le plus fort effet de levier sur l'objectif 2027, d'après le croisement population jeune × offre d'accompagnement × performance.</p>
+      <div class="besoins" id="besoins-terr"></div>
+      <div class="docs-liens"><button class="btn sec" onclick="window.print()">🖨️ Imprimer / exporter en PDF</button></div>
+    </div>
+
+    <div class="section">
+      <h2>Interopérabilité avec l'écosystème national</h2>
+      <p class="intro">DEFAR n'est pas une plateforme de plus : elle se connecte aux référentiels existants pour éviter les doubles saisies.</p>
+      <div class="grille">
+        <div class="carte-p"><div class="role">Ministère du Numérique</div><h4>Écosystème startup</h4><p>Passerelle API : les startups labellisées issues de DEFAR remontent vers la plateforme du ministère du Numérique, et les incubateurs y étant référencés s'affichent sur la carte.</p></div>
+        <div class="carte-p"><div class="role">Financement</div><h4>DER/FJ</h4><p>Suivi anonymisé des demandes de financement orientées par DEFAR et de leur issue, pour mesurer l'efficacité des parcours.</p></div>
+        <div class="carte-p"><div class="role">Formalisation</div><h4>APIX / guichets de création</h4><p>Comptage des immatriculations de jeunes (NINEA, RCCM) par commune : la source du compteur « 100 000 formalisés ».</p></div>
+        <div class="carte-p"><div class="role">Statistique publique</div><h4>ANSD</h4><p>Données démographiques du recensement (jeunes 15-35 ans) par commune, socle du calcul des zones blanches.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VOLET 4 : LE PROJET ===================== -->
+<section class="vue scroll" id="vue-projet">
+  <div class="page">
+    <div class="hero-p">
+      <div>
+        <div class="eyebrow">Proposition CEGIT pour la DPEP</div>
+        <h1>DEFAR : construire, ensemble, 100 000 parcours d'entrepreneurs</h1>
+        <p><b>Defar</b> signifie « faire, construire, bâtir » en wolof. C'est aussi un acronyme : <b>D</b>ispositif d'<b>E</b>ntrepreneuriat, de <b>F</b>ormalisation, d'<b>A</b>ccompagnement et de <b>R</b>essources territoriales. Un même outil cartographique sert le jeune qui cherche où aller, et l'administration qui pilote l'équité territoriale.</p>
+      </div>
+      <div class="carte-p" style="background:var(--vert);color:#fff;border:0">
+        <div class="role" style="color:var(--or)">En une phrase</div>
+        <p style="color:#fff;font-size:16px">Une plateforme open source, mobile-first et légère, qui rend visible l'offre d'accompagnement sur les 14 régions, oriente chaque jeune vers le bon guichet et mesure, en temps réel et par territoire, la progression vers l'objectif 2027.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Valeur ajoutée pour la DPEP</h2>
+      <table class="valeur">
+        <thead><tr><th>Enjeu de la DPEP</th><th>Réponse DEFAR</th><th>Impact mesurable</th></tr></thead>
+        <tbody>
+          <tr><td>Fédérer sans se substituer</td><td>Annuaire cartographique unifié, chaque partenaire gère sa fiche</td><td>Visibilité des dispositifs existants, réduction des doublons</td></tr>
+          <tr><td>Parcours adapté au jeune</td><td>Orientation par maturité, besoin, secteur et proximité ; prise de rendez-vous</td><td>Baisse du taux d'abandon des porteurs isolés</td></tr>
+          <tr><td>Objectif 2027 (100 000 jeunes)</td><td>Tableau de bord spatialisé des indicateurs, trajectoire mensuelle</td><td>Pilotage précis par région et département, alertes de retard</td></tr>
+          <tr><td>Équité territoriale</td><td>Analyse des zones blanches (population jeune × offre)</td><td>Implantations ciblées, unités mobiles là où elles comptent</td></tr>
+          <tr><td>Mobilisation de partenaires</td><td>Fiches « besoins par territoire » exportables</td><td>Argumentaire chiffré et visuel pour les bailleurs</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Architecture fonctionnelle et technique</h2>
+      <p class="intro">Une pile 100 % open source, hébergeable au Sénégal (souveraineté des données), conçue pour une faible bande passante.</p>
+      <div class="archi">
+        <svg viewBox="0 0 980 470" font-family="Source Sans 3, sans-serif" font-size="13">
+          <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#98A39D"/></marker></defs>
+          <!-- Usagers -->
+          <text x="20" y="24" font-weight="700" fill="#5E6B64" font-size="12" letter-spacing="1">USAGERS</text>
+          <g><rect x="20" y="36" width="225" height="58" rx="10" fill="#E3F1EA" stroke="#0B5D3B"/><text x="34" y="60" font-weight="700" fill="#0B5D3B" font-size="14">Jeunes porteurs de projets</text><text x="34" y="79" fill="#5E6B64">Web mobile, USSD, WhatsApp</text></g>
+          <g><rect x="257" y="36" width="225" height="58" rx="10" fill="#E3F1EA" stroke="#0B5D3B"/><text x="271" y="60" font-weight="700" fill="#0B5D3B" font-size="14">Agents DPEP et régions</text><text x="271" y="79" fill="#5E6B64">Tableau de bord, analyses</text></g>
+          <g><rect x="494" y="36" width="225" height="58" rx="10" fill="#E3F1EA" stroke="#0B5D3B"/><text x="508" y="60" font-weight="700" fill="#0B5D3B" font-size="14">Structures partenaires</text><text x="508" y="79" fill="#5E6B64">Espace partenaire, RDV</text></g>
+          <g><rect x="731" y="36" width="229" height="58" rx="10" fill="#E3F1EA" stroke="#0B5D3B"/><text x="745" y="60" font-weight="700" fill="#0B5D3B" font-size="14">Cabinet, bailleurs, PTF</text><text x="745" y="79" fill="#5E6B64">Fiches territoires, exports</text></g>
+          <!-- Applications -->
+          <text x="20" y="128" font-weight="700" fill="#5E6B64" font-size="12" letter-spacing="1">APPLICATIONS</text>
+          <rect x="20" y="138" width="440" height="78" rx="10" fill="#fff" stroke="#E2E0DA"/>
+          <text x="34" y="162" font-weight="700" font-size="14">Volet Grand public · Guichet d'orientation</text>
+          <text x="34" y="182" fill="#5E6B64">Carte des structures, filtres besoin / secteur / maturité,</text>
+          <text x="34" y="200" fill="#5E6B64">parcours conseillé, fiches pratiques, prise de rendez-vous</text>
+          <rect x="480" y="138" width="480" height="78" rx="10" fill="#fff" stroke="#E2E0DA"/>
+          <text x="494" y="162" font-weight="700" font-size="14">Volet Décisionnel · Pilotage DPEP</text>
+          <text x="494" y="182" fill="#5E6B64">KPI spatialisés, trajectoire 2027, zones blanches, opportunités</text>
+          <text x="494" y="200" fill="#5E6B64">sectorielles, fiches territoires, back-office partenaires</text>
+          <!-- Services -->
+          <text x="20" y="250" font-weight="700" fill="#5E6B64" font-size="12" letter-spacing="1">SERVICES</text>
+          <g font-size="13">
+            <rect x="20" y="260" width="175" height="56" rx="10" fill="#FDF3DA" stroke="#E8A817"/><text x="32" y="283" font-weight="700">API métier</text><text x="32" y="301" fill="#5E6B64">FastAPI · OpenAPI</text>
+            <rect x="208" y="260" width="175" height="56" rx="10" fill="#FDF3DA" stroke="#E8A817"/><text x="220" y="283" font-weight="700">Services carto</text><text x="220" y="301" fill="#5E6B64">pg_tileserv · QGIS Server</text>
+            <rect x="396" y="260" width="175" height="56" rx="10" fill="#FDF3DA" stroke="#E8A817"/><text x="408" y="283" font-weight="700">Authentification</text><text x="408" y="301" fill="#5E6B64">Keycloak · rôles</text>
+            <rect x="584" y="260" width="175" height="56" rx="10" fill="#FDF3DA" stroke="#E8A817"/><text x="596" y="283" font-weight="700">Indicateurs & ETL</text><text x="596" y="301" fill="#5E6B64">Python · Airflow</text>
+            <rect x="772" y="260" width="188" height="56" rx="10" fill="#FDF3DA" stroke="#E8A817"/><text x="784" y="283" font-weight="700">Notifications</text><text x="784" y="301" fill="#5E6B64">SMS · e-mail · WhatsApp</text>
+          </g>
+          <!-- Données -->
+          <text x="20" y="350" font-weight="700" fill="#5E6B64" font-size="12" letter-spacing="1">DONNÉES</text>
+          <rect x="20" y="360" width="440" height="90" rx="10" fill="#0B5D3B"/>
+          <text x="36" y="386" font-weight="700" fill="#fff" font-size="15">PostgreSQL / PostGIS · entrepôt DEFAR</text>
+          <text x="36" y="407" fill="#E3F1EA">Référentiel des structures · parcours & RDV · indicateurs</text>
+          <text x="36" y="426" fill="#E3F1EA">découpage administratif (14 régions, 46 départements, communes)</text>
+          <rect x="480" y="360" width="480" height="90" rx="10" fill="#fff" stroke="#E2E0DA" stroke-dasharray="5 4"/>
+          <text x="496" y="386" font-weight="700" font-size="14">Sources partenaires (connecteurs)</text>
+          <text x="496" y="407" fill="#5E6B64">APIX (immatriculations) · DER/FJ · ADEPME · ANSD (démographie)</text>
+          <text x="496" y="426" fill="#5E6B64">Écosystème startup (min. du Numérique) · chambres consulaires</text>
+          <!-- flèches -->
+          <g stroke="#98A39D" stroke-width="1.6" marker-end="url(#fl)" fill="none">
+            <path d="M132 94v42"/><path d="M370 94q0 24 230 42"/><path d="M606 94v42"/><path d="M845 94v42"/>
+            <path d="M240 216v42"/><path d="M720 216v42"/>
+            <path d="M240 316v42"/><path d="M670 316v42"/><path d="M480 405h-18"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Démarche de déploiement</h2>
+      <div class="phases">
+        <div class="phase"><small>Phase 0 · 1 mois</small><h4>Cadrage</h4><ul><li>Ateliers DPEP & partenaires</li><li>Inventaire des données</li><li>Indicateurs cibles</li></ul></div>
+        <div class="phase"><small>Phase 1 · 3 mois</small><h4>Pilote 3 régions</h4><ul><li>Dakar, Kolda, Matam</li><li>Référentiel des structures</li><li>Guichet + tableau de bord</li></ul></div>
+        <div class="phase"><small>Phase 2 · 4 mois</small><h4>Généralisation</h4><ul><li>14 régions</li><li>Connecteurs APIX / DER/FJ</li><li>Formation des agents</li></ul></div>
+        <div class="phase"><small>Phase 3 · continu</small><h4>Transfert & MCO</h4><ul><li>Montée en compétences</li><li>Hébergement souverain</li><li>Évolutions</li></ul></div>
+      </div>
+      <div class="docs-liens">
+        <a class="btn" href="docs/argumentaire.md" data-doc>📄 Argumentaire complet</a>
+        <a class="btn sec" href="docs/architecture-fonctionnelle.md" data-doc>🧩 Architecture fonctionnelle</a>
+      </div>
+    </div>
+
+    <div class="signature">
+      <div class="logo-c">CE<span>GIT</span></div>
+      <p><b>Centre d'Expertise en Géomatique et Ingénierie Territoriale</b> · Technologies géospatiales, numérique et ingénierie territoriale. Contact : Bathie NDIAYE, consultant en SIG, géodonnées et ingénierie territoriale · <a href="https://cegitgroup.com" target="_blank" rel="noopener">cegitgroup.com</a></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<nav class="nav-mob" aria-label="Navigation mobile">
+  <button data-vue="guichet" class="actif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Guichet</button>
+  <button data-vue="pilotage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Pilotage</button>
+  <button data-vue="partenaires"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 20c0-2.5 1.3-4.6 3-5.3 2.5.3 5 2.4 5 5.3"/></svg>Partenaires</button>
+  <button data-vue="projet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Projet</button>
+</nav>
+
+<div class="modale" id="modale" role="dialog" aria-modal="true"><div class="boite" id="modale-boite"></div></div>
+
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="assets/vendor/chart.umd.min.js"></script>
+<script src="assets/vendor/marked.min.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
